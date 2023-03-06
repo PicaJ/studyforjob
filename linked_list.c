@@ -29,7 +29,7 @@ LINKED_LIST * linked_head_add(LINKED_LIST * head, char *data){
     sprintf(add_linked->data,"%s",data);
 
     if(ptr->next){
-        add_linked->next = ptr->next;
+        add_linked->next = ptr->next;//假如head的next有东西，则将新的插入这中间
     }else{
         add_linked->next = NULL;
     }
@@ -95,11 +95,13 @@ int linked_delete(LINKED_LIST * head, LINKED_LIST * delet_linked){
 
     LINKED_LIST * ptr = head;
 
-    while(ptr->next && ptr->next->data && strcmp(ptr->next->data,delet_linked->data)){
+    int ret = 0;
+
+    while(ptr->next && ptr->next->data && (ret = strcmp(ptr->next->data,delet_linked->data))){
         ptr = ptr->next;
     }
 
-    if(!ptr->next){
+    if(ret){
         printf("not find deleted linked list!!!\n");
         return -1;
     }
@@ -134,7 +136,7 @@ int main(){
     LINKED_LIST * head_ptr = linked_init(NULL);
     
     LINKED_LIST * point0 = NULL;
-    point0 = linked_head_add(head_ptr,"teststr0");
+    point0 = linked_tail_add(head_ptr,"teststr0");
 
     LINKED_LIST * point1 = NULL;
     point1 = linked_tail_add(head_ptr,"teststr1");
@@ -148,7 +150,7 @@ int main(){
     linked_printf(head_ptr);   
 
     LINKED_LIST * point4 = NULL;
-    point4 = linked_head_add(head_ptr,"teststr4");
+    point4 = linked_tail_add(head_ptr,"teststr4");
 
     linked_printf(head_ptr);
 
@@ -156,7 +158,7 @@ int main(){
     printf("data:%s\n",point1->data);
 
     printf("======test find return print===========\n");
-    LINKED_LIST * point5 = linked_find(head_ptr,3);
+    LINKED_LIST * point5 = linked_find(head_ptr,4);
     printf("data:%s\n",point5->data);
 
     printf("======test delete print================\n");
